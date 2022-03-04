@@ -5,7 +5,7 @@
       <el-form
         :model="param"
         :rules="rules"
-        ref="login"
+        ref="loginFrom"
         label-width="0px"
         class="ms-content"
       >
@@ -38,12 +38,12 @@
 </template>
 
 <script>
-import { ref, reactive } from "vue";
+import { ref, reactive, defineComponent } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
-
-export default {
+import { login } from "../api/user";
+export default defineComponent({
   setup() {
     const router = useRouter();
     const param = reactive({
@@ -61,15 +61,24 @@ export default {
       ],
       password: [{ required: true, message: "请输入密码", trigger: "blur" }],
     };
-    const login = ref(null);
+    const loginFrom = ref(null);
     const submitForm = () => {
-      login.value.validate((valid) => {
+      loginFrom.value.validate((valid) => {
         if (valid) {
-          ElMessage.success("登录成功");
-          localStorage.setItem("ms_username", param.username);
-          router.push("/");
+          login({ param })
+            .then((res) => {
+              ElMessage.success("登录成功");
+              localStorage.setItem("ms_username", param.username);
+              router.push("/");
+            })
+            .catch(() => {
+              ElMessage.error("登录失败");
+            });
+          // ElMessage.success("登录成功");
+          // localStorage.setItem("ms_username", param.username);
+          // router.push("/");
         } else {
-          ElMessage.error("登录成功");
+          ElMessage.error("登录失败");
           return false;
         }
       });
@@ -81,11 +90,11 @@ export default {
     return {
       param,
       rules,
-      login,
+      loginFrom,
       submitForm,
     };
   },
-};
+});
 </script>
 
 <style scoped>
