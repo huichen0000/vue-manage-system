@@ -29,8 +29,8 @@ export default [
   {
     url: "/api/user/login",
     method: "post",
-    response: (config) => {
-      const { username } = config.body;
+    response: ({ body }) => {
+      const { username } = body;
       const token = tokens[username];
 
       // mock error
@@ -50,10 +50,10 @@ export default [
 
   // get user info
   {
-    url: "/api/user/info.*",
+    url: "/api/user/info",
     method: "get",
-    response: (config) => {
-      const { token } = config.query;
+    response: ({ query }) => {
+      const { token } = query;
       const info = users[token];
 
       // mock error
@@ -65,7 +65,7 @@ export default [
       }
 
       return {
-        code: 20000,
+        code: 200,
         data: info,
       };
     },
@@ -75,9 +75,9 @@ export default [
   {
     url: "/api/user/logout",
     method: "post",
-    response: (_) => {
+    response: ({ body }) => {
       return {
-        code: 20000,
+        code: 200,
         data: "success",
       };
     },

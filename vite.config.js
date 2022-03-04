@@ -14,10 +14,10 @@ export default ({ command }) => {
       viteMockServe({
         supportTs: false,
         mockPath: "mock",
-        watchFiles: true, // 监视文件夹中的文件更改。 并实时同步到请求结果
-        localEnabled: command === "dev", // 设置为 false 将禁用 mock 功能
+        localEnabled: command === "serve", // 设置为 false 将禁用 mock 功能
+        prodEnabled: command !== "serve" && prodMock,
         injectCode: `
-          import { setupProdMockServer } from './mockProdServer.js';
+          import { setupProdMockServer } from './mockProdServer';
           setupProdMockServer();
         `,
         logger: true, // 是否在控制台显示请求日志
