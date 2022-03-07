@@ -10,7 +10,9 @@
   "dependencies": {
     "axios": "^0.21.1",
     "element-plus": "1.0.2-beta.52",
+    "js-cookie": "^3.0.1",
     "mockjs": "^1.1.0",
+    "nprogress": "^0.2.0",
     "vue": "^3.1.2",
     "vue-cropperjs": "^5.0.0",
     "vue-i18n": "^9.0.0",

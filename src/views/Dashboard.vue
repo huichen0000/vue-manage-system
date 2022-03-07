@@ -117,11 +117,13 @@
 <script>
 import Schart from "vue-schart";
 import { reactive } from "vue";
+import { useStore } from 'vuex'
 export default {
     name: "dashboard",
     components: { Schart },
     setup() {
-        const name = localStorage.getItem("ms_username");
+        const store = useStore();
+        const name = store.getters.name;
         const role = name === "admin" ? "超级管理员" : "普通用户";
 
         const data = reactive([

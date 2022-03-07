@@ -29,9 +29,15 @@ export default [
   {
     url: "/api/user/login",
     method: "post",
-    response: ({ body }) => {
-      const { username } = body;
-      const token = tokens[username];
+    response: (param) => {
+      const  data  = param.body;
+      let token;
+      console.log("请求参数:", data);
+      if (data.username === "admin") {
+        token = tokens["admin"];
+      } else {
+        token = tokens["editor"];
+      }
 
       // mock error
       if (!token) {
@@ -53,7 +59,7 @@ export default [
     url: "/api/user/info",
     method: "get",
     response: ({ query }) => {
-      const { token } = query;
+      const { token } = query.query;
       const info = users[token];
 
       // mock error

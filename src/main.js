@@ -7,8 +7,7 @@ import "./assets/css/icon.css";
 const app = createApp(App);
 installElementPlus(app);
 
-// if (process.env.NODE_ENV === "development") {
-//   require("./mock"); // simulation data
-// }
+
+import "./permission";
 
 app.use(store).use(router).mount("#app");

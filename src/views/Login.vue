@@ -29,7 +29,9 @@
           </el-input>
         </el-form-item>
         <div class="login-btn">
-          <el-button type="primary" @click="submitForm()">登录</el-button>
+          <el-button :loading="loading" type="primary" @click="submitForm()"
+            >登录</el-button
+          >
         </div>
         <p class="login-tips">Tips : 用户名和密码随便填。</p>
       </el-form>
@@ -41,10 +43,10 @@
 import { ref, reactive, defineComponent } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { ElMessage } from "element-plus";
 import { login } from "../api/user";
 export default defineComponent({
   setup() {
+    const loading = ref(false);
     const router = useRouter();
     const param = reactive({
       username: "admin",
@@ -63,23 +65,30 @@ export default defineComponent({
     };
     const loginFrom = ref(null);
     const submitForm = () => {
+      loading.value = true;
       loginFrom.value.validate((valid) => {
         if (valid) {
-          login({ param })
-            .then((res) => {
-              ElMessage.success("登录成功");
-              localStorage.setItem("ms_username", param.username);
-              router.push("/");
-            })
-            .catch(() => {
-              ElMessage.error("登录失败");
+          try {
+            const { data } = await login({ param });
+            const { token } = data;
+            await store.dispatch("user/saveToken", {
+              token,
             });
-          // ElMessage.success("登录成功");
-          // localStorage.setItem("ms_username", param.username);
-          // router.push("/");
-        } else {
-          ElMessage.error("登录失败");
-          return false;
+            router.push("/");
+
+            // login(param)
+            //   .then((res) => {
+            //     ElMessage.success("登录成功");
+            //     localStorage.setItem("ms_username", param.username);
+            //     router.push("/");
+            //   })
+            //   .catch(() => {
+            //     ElMessage.error("登录失败");
+            //   });
+          } catch (e) {
+          } finally {
+            loading.value = false;
+          }
         }
       });
     };

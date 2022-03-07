@@ -1,6 +1,7 @@
 import vue from "@vitejs/plugin-vue";
 import { viteMockServe } from "vite-plugin-mock";
 
+
 export default ({ command }) => {
   // const prodMock = true;
   // const base = process.env.VUE_APP_BASE_API;
@@ -23,6 +24,7 @@ export default ({ command }) => {
         logger: true, // 是否在控制台显示请求日志
       }),
     ],
+
     // dev: {
     //   port: 3000,
     //   proxy: {
