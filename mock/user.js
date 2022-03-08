@@ -24,15 +24,57 @@ const users = {
   },
 };
 
+const todoList = [
+  {
+    title: "今天要修复100个bug",
+    status: false,
+  },
+  {
+    title: "今天要修复100个bug",
+    status: false,
+  },
+  {
+    title: "今天要写100行代码加几个bug吧",
+    status: false,
+  },
+  {
+    title: "今天要修复100个bug",
+    status: false,
+  },
+  {
+    title: "今天要修复100个bug",
+    status: true,
+  },
+  {
+    title: "今天要写100行代码加几个bug吧",
+    status: true,
+  },
+  {
+    title: "今天要写100行代码加几个bug吧",
+    status: true,
+  },
+  {
+    title: "今天要写100行代码加几个bug吧",
+    status: true,
+  },
+  {
+    title: "今天要写100行代码加几个bug吧",
+    status: true,
+  },
+  {
+    title: "今天要写100行代码加几个bug吧",
+    status: true,
+  },
+];
+
 export default [
   // user login
   {
     url: "/api/user/login",
     method: "post",
     response: (param) => {
-      const  data  = param.body;
+      const data = param.body;
       let token;
-      console.log("请求参数:", data);
       if (data.username === "admin") {
         token = tokens["admin"];
       } else {
@@ -58,8 +100,8 @@ export default [
   {
     url: "/api/user/info",
     method: "get",
-    response: ({ query }) => {
-      const { token } = query.query;
+    response: (query) => {
+      const token = query.query.token;
       const info = users[token];
 
       // mock error
@@ -81,10 +123,21 @@ export default [
   {
     url: "/api/user/logout",
     method: "post",
-    response: ({ body }) => {
+    response: () => {
       return {
         code: 200,
         data: "success",
+      };
+    },
+  },
+
+  {
+    url: "/api/user/todoList",
+    method: "get",
+    response: () => {
+      return {
+        code: 200,
+        data: todoList,
       };
     },
   },

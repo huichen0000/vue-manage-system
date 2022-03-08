@@ -29,7 +29,7 @@
           </el-input>
         </el-form-item>
         <div class="login-btn">
-          <el-button :loading="loading" type="primary" @click="submitForm()"
+          <el-button :loading="loading" type="primary" @click.prevent="submitForm()"
             >登录</el-button
           >
         </div>
@@ -46,10 +46,13 @@ import { useRouter } from "vue-router";
 import { login } from "../api/user";
 export default defineComponent({
   setup() {
+    const store = useStore();
+    store.dispatch("tagsView/clearTags");
+
     const loading = ref(false);
     const router = useRouter();
     const param = reactive({
-      username: "admin",
+      username: store.getters.name,
       password: "123123",
     });
 
@@ -64,42 +67,30 @@ export default defineComponent({
       password: [{ required: true, message: "请输入密码", trigger: "blur" }],
     };
     const loginFrom = ref(null);
-    const submitForm = () => {
+    function submitForm() {
       loading.value = true;
-      loginFrom.value.validate((valid) => {
+      loginFrom.value.validate(async (valid) => {
         if (valid) {
           try {
-            const { data } = await login({ param });
-            const { token } = data;
+            const data = await login(param);
+            const { token } = data.data;
             await store.dispatch("user/saveToken", {
               token,
             });
             router.push("/");
-
-            // login(param)
-            //   .then((res) => {
-            //     ElMessage.success("登录成功");
-            //     localStorage.setItem("ms_username", param.username);
-            //     router.push("/");
-            //   })
-            //   .catch(() => {
-            //     ElMessage.error("登录失败");
-            //   });
           } catch (e) {
           } finally {
             loading.value = false;
           }
         }
       });
-    };
-
-    const store = useStore();
-    store.commit("clearTags");
+    }
 
     return {
       param,
       rules,
       loginFrom,
+      loading,
       submitForm,
     };
   },

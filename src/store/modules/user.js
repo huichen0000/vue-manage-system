@@ -4,8 +4,8 @@ import { COOKIE_PREFIX } from "../../api/constant";
 import { resetRouter } from "../../router";
 
 const state = {
-  token: getCookieByKey("token"),
-  name: "灰是小灰灰的灰",
+  token: getCookieByKey("vite_token"),
+  name: "admin",
   avatar: "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
   introduction: "",
   roles: [],

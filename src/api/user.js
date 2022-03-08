@@ -22,3 +22,19 @@ export function logout() {
     method: "post",
   });
 }
+
+export function getTodoList(token) {
+  return request({
+    url: "/user/todoList",
+    method: "get",
+    params: { token },
+  });
+}
+
+export function getTableList(data) {
+  return request({
+    url: "/demo/tableList",
+    method: "get",
+    data,
+  });
+}

@@ -80,7 +80,7 @@
 <script>
 import { ref, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { fetchData } from "../api/index";
+import { getTableList } from "../api/user";
 
 export default {
     name: "basetable",
@@ -95,8 +95,8 @@ export default {
         const pageTotal = ref(0);
         // 获取表格数据
         const getData = () => {
-            fetchData(query).then((res) => {
-                tableData.value = res.list;
+            getTableList(query).then((res) => {
+                tableData.value = res.data;
                 pageTotal.value = res.pageTotal || 50;
             });
         };
